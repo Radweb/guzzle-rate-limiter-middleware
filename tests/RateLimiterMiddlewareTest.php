@@ -18,5 +18,10 @@ class RateLimiterMiddlewareTest extends TestCase
             RateLimiterMiddleware::class,
             RateLimiterMiddleware::perMinute(5)
         );
+
+        $this->assertInstanceOf(
+            RateLimiterMiddleware::class,
+            RateLimiterMiddleware::perDay(10000)
+        );
     }
 }
