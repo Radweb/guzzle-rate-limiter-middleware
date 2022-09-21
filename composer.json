@@ -1,11 +1,11 @@
 {
-    "name": "spatie/guzzle-rate-limiter-middleware",
+    "name": "radweb/guzzle-rate-limiter-middleware",
     "description": "A rate limiter for Guzzle",
     "keywords": [
         "spatie",
         "guzzle-rate-limiter-middleware"
     ],
-    "homepage": "https://github.com/spatie/guzzle-rate-limiter-middleware",
+    "homepage": "https://github.com/Radweb/guzzle-rate-limiter-middleware",
     "license": "MIT",
     "authors": [
         {
