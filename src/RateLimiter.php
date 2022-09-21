@@ -6,6 +6,7 @@ class RateLimiter
 {
     const TIME_FRAME_MINUTE = 'minute';
     const TIME_FRAME_SECOND = 'second';
+    const TIME_FRAME_DAY = 'day';
 
     /** @var int */
     protected $limit;
@@ -72,6 +73,10 @@ class RateLimiter
     {
         if ($this->timeFrame === self::TIME_FRAME_MINUTE) {
             return 60 * 1000;
+        }
+
+        if ($this->timeFrame === self::TIME_FRAME_DAY) {
+            return 24 * 60 * 60 * 1000;
         }
 
         return 1000;

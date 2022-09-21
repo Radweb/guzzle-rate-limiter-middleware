@@ -135,4 +135,69 @@ class RateLimiterTest extends TestCase
 
         $this->assertEquals(60000, $this->deferrer->getCurrentTime());
     }
+
+    /** @test */
+    public function it_execute_actions_below_a_limit_for_day()
+    {
+        $rateLimiter = $this->createRateLimiter(3, RateLimiter::TIME_FRAME_DAY);
+
+        $this->assertEquals(0, $this->deferrer->getCurrentTime());
+
+        $rateLimiter->handle(function () {
+            $this->deferrer->sleep(100);
+        });
+
+        $this->assertEquals(100, $this->deferrer->getCurrentTime());
+
+        $rateLimiter->handle(function () {
+            $this->deferrer->sleep(100);
+        });
+
+        $this->assertEquals(200, $this->deferrer->getCurrentTime());
+
+        $rateLimiter->handle(function () {
+            $this->deferrer->sleep(100);
+        });
+
+        $this->assertEquals(300, $this->deferrer->getCurrentTime());
+
+        $dayInMilliseconds = 24 * 60 * 60 * 1000;
+
+        $this->deferrer->sleep($dayInMilliseconds - 300);
+
+        $rateLimiter->handle(function () {
+            $this->deferrer->sleep(100);
+        });
+
+        $this->assertEquals($dayInMilliseconds + 100, $this->deferrer->getCurrentTime());
+    }
+
+    /** @test */
+    public function it_defers_actions_when_it_reaches_a_limit_in_day()
+    {
+        $rateLimiter = $this->createRateLimiter(3, RateLimiter::TIME_FRAME_DAY);
+
+        $this->assertEquals(0, $this->deferrer->getCurrentTime());
+
+        $rateLimiter->handle(function () {
+        });
+
+        $this->assertEquals(0, $this->deferrer->getCurrentTime());
+
+        $rateLimiter->handle(function () {
+        });
+
+        $this->assertEquals(0, $this->deferrer->getCurrentTime());
+
+        $rateLimiter->handle(function () {
+        });
+
+        $this->assertEquals(0, $this->deferrer->getCurrentTime());
+
+        $rateLimiter->handle(function () {
+        });
+
+        $this->assertEquals(24 * 60 * 60 * 1000, $this->deferrer->getCurrentTime());
+    }
+    
 }
